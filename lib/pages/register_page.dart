@@ -112,3 +112,5 @@ class _RegisterPageState extends State<RegisterPage> {
     prefs.setString("user", jsonEncode(user));
   }
 }
+
+//Marzo 14 de 2024
