@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:itm_libros/pages/register_page.dart';
 
+import 'login_page.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
@@ -15,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const RegisterPage()
+          builder: (context) => const LoginPage()
         )
       );
     });

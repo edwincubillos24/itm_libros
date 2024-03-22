@@ -33,4 +33,6 @@ class User{
   }
 
   User(this._name, this._email, this._password);
+
+  User.Empty();
 }
