@@ -64,6 +64,13 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void showMessage(String msg){
+    SnackBar snackBar = SnackBar(
+        content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,7 +293,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _saveUser(user);
         Navigator.pop(context);
       } else {
-        print("error");
+        showMessage("Las contraseñas no son iguales");
       }
     });
   }

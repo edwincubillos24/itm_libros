@@ -22,6 +22,13 @@ class _LoginPageState extends State<LoginPage> {
 
   User userLoaded = User.Empty();
 
+  void showMessage(String msg){
+    SnackBar snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   void _onLoginButtonClicked() {
     if (_email.text == userLoaded.email &&
         _password.text == userLoaded.password) {
@@ -29,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
     else {
-      print("Error");
+      showMessage("Correo electrónico o contraseña incorrectas");
     }
   }
 
