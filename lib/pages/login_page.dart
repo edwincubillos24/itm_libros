@@ -28,6 +28,9 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
+    else {
+      print("Error");
+    }
   }
 
   void _getUser() async {

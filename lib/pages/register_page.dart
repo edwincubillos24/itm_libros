@@ -35,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Genre? _genre = Genre.male;
   String _genreSelected = 'Masculino';
 
-  List<String> _cities = [
+  final List<String> _cities = [
     'Barranquilla',
     'Bogotá',
     'Cali',
@@ -54,8 +54,8 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         locale: const Locale("es", "CO"),
         initialDate: DateTime.now(),
-        firstDate: DateTime(2022, 1),
-        lastDate: DateTime(2024, 3, 21),
+        firstDate: DateTime(1924, 01, 01),
+        lastDate: DateTime.now(),
         helpText: _birthDate);
     if (newDate != null) {
       setState(() {
@@ -286,7 +286,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _saveUser(user);
         Navigator.pop(context);
       } else {
-        //mostramos un mensaje de error
+        print("error");
       }
     });
   }
