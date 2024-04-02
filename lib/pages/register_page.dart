@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/User.dart';
+import '../utils.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -64,9 +65,9 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  void showMessage(String msg){
+  void showMessage(String msg) {
     SnackBar snackBar = SnackBar(
-        content: Text(msg),
+      content: Text(msg),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -105,8 +106,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Correo electrónico',
-                      prefixIcon: Icon(Icons.email)),
+                      prefixIcon: Icon(Icons.email),
+                    helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.emailAddress,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value!.isValidEmail() ? null : 'Correo invalido',
                 ),
                 const SizedBox(
                   height: 16.0,
@@ -128,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-                  ),
+                      helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -150,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             _repPasswordVisible = !_repPasswordVisible;
                           });
                         }),
-                  ),
+                      helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -167,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     });
                   },
                   dropdownMenuEntries:
-                  _cities.map<DropdownMenuEntry<String>>((String city) {
+                      _cities.map<DropdownMenuEntry<String>>((String city) {
                     return DropdownMenuEntry<String>(value: city, label: city);
                   }).toList(),
                 ),
@@ -286,14 +290,31 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+
+
   void _onRegisterButtonClicked() {
     setState(() {
-      if (_password.text == _repPassword.text) {
-        var user = User(_name.text, _email.text, _password.text);
-        _saveUser(user);
-        Navigator.pop(context);
+      if (_password.text.isEmpty ||
+          _repPassword.text.isEmpty ||
+          _email.text.isEmpty) {
+        showMessage("ERROR: Debe digitar correo electrónico y las contraseñas");
       } else {
-        showMessage("Las contraseñas no son iguales");
+ //       if (!Utils.isEmail(_email.text)) {
+        if (!_email.text.isValidEmail()){
+          showMessage("ERROR: El correo electrónico no es válido");
+        } else {
+          if (!Utils.isSizePasswordValid(_password.text)) {
+            showMessage("ERROR: La contraseña debe tener mas de 6 o más digitos");
+          } else {
+            if (_password.text == _repPassword.text) {
+              var user = User(_name.text, _email.text, _password.text);
+              _saveUser(user);
+              Navigator.pop(context);
+            } else {
+              showMessage("ERROR: Las contraseñas no son iguales");
+            }
+          }
+        }
       }
     });
   }
@@ -301,6 +322,14 @@ class _RegisterPageState extends State<RegisterPage> {
   void _saveUser(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user", jsonEncode(user));
+  }
+}
+
+extension on String {
+  bool isValidEmail() {
+    return RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
   }
 }
 
