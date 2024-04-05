@@ -297,4 +297,4 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
-//Marzo 21 de 2024
+//Abril 4 de 2024
