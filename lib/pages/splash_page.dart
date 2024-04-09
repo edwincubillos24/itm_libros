@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:itm_libros/pages/home_page_navigation_bar_page.dart';
+import 'package:itm_libros/pages/home_page_tabs_page.dart';
 import 'package:itm_libros/pages/register_page.dart';
 
+import 'home_page_navigation_drawer_page.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -17,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginPage()
+          builder: (context) => const HomePageTabsPage()
         )
       );
     });

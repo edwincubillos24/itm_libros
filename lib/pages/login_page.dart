@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _onLoginButtonClicked() {
     _firebaseApi.loginUser(_email.text, _password.text);
-   /* if (_email.text == userLoaded.email &&
+    /*if (_email.text == userLoaded.email &&
         _password.text == userLoaded.password) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
