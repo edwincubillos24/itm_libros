@@ -5,6 +5,7 @@ import 'package:itm_libros/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/User.dart';
+import '../repository/firebase_api.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +16,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -23,14 +27,15 @@ class _LoginPageState extends State<LoginPage> {
   User userLoaded = User.Empty();
 
   void _onLoginButtonClicked() {
-    if (_email.text == userLoaded.email &&
+    _firebaseApi.loginUser(_email.text, _password.text);
+   /* if (_email.text == userLoaded.email &&
         _password.text == userLoaded.password) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
     else {
       print("Error");
-    }
+    }*/
   }
 
   void _getUser() async {

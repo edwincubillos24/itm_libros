@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/User.dart';
+import '../repository/firebase_api.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,6 +17,9 @@ class RegisterPage extends StatefulWidget {
 enum Genre { male, female }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -279,16 +283,21 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _onRegisterButtonClicked() {
+  void _onRegisterButtonClicked()  {
     setState(() {
       if (_password.text == _repPassword.text) {
         var user = User(_name.text, _email.text, _password.text);
         _saveUser(user);
+        registerUser();
         Navigator.pop(context);
       } else {
         print("error");
       }
     });
+  }
+
+  Future<void> registerUser() async {
+    var result = await _firebaseApi.registerUser(_email.text,_password.text);
   }
 
   void _saveUser(User user) async {
