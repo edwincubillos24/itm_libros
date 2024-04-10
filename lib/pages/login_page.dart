@@ -26,6 +26,13 @@ class _LoginPageState extends State<LoginPage> {
 
   User userLoaded = User.Empty();
 
+  void showMessage(String msg){
+    SnackBar snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   void _onLoginButtonClicked() {
     _firebaseApi.loginUser(_email.text, _password.text);
     /*if (_email.text == userLoaded.email &&
@@ -34,8 +41,8 @@ class _LoginPageState extends State<LoginPage> {
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
     else {
-      print("Error");
-    }*/
+      showMessage("Correo electrónico o contraseña incorrectas");
+    }
   }
 
   void _getUser() async {

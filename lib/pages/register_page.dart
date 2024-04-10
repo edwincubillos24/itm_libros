@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/User.dart';
 import '../repository/firebase_api.dart';
+import '../utils.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -156,7 +157,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             _repPasswordVisible = !_repPasswordVisible;
                           });
                         }),
-                  ),
+                      helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -173,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     });
                   },
                   dropdownMenuEntries:
-                  _cities.map<DropdownMenuEntry<String>>((String city) {
+                      _cities.map<DropdownMenuEntry<String>>((String city) {
                     return DropdownMenuEntry<String>(value: city, label: city);
                   }).toList(),
                 ),
@@ -352,15 +353,31 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _onRegisterButtonClicked()  {
+
+
+  void _onRegisterButtonClicked() {
     setState(() {
-      if (_password.text == _repPassword.text) {
-        var user = User(_name.text, _email.text, _password.text);
-        _saveUser(user);
-        registerUser();
-        Navigator.pop(context);
+      if (_password.text.isEmpty ||
+          _repPassword.text.isEmpty ||
+          _email.text.isEmpty) {
+        showMessage("ERROR: Debe digitar correo electrónico y las contraseñas");
       } else {
-        print("error");
+ //       if (!Utils.isEmail(_email.text)) {
+        if (!_email.text.isValidEmail()){
+          showMessage("ERROR: El correo electrónico no es válido");
+        } else {
+          if (!Utils.isSizePasswordValid(_password.text)) {
+            showMessage("ERROR: La contraseña debe tener mas de 6 o más digitos");
+          } else {
+            if (_password.text == _repPassword.text) {
+              var user = User(_name.text, _email.text, _password.text);
+              _saveUser(user);
+              Navigator.pop(context);
+            } else {
+              showMessage("ERROR: Las contraseñas no son iguales");
+            }
+          }
+        }
       }
     });
   }
@@ -375,4 +392,13 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
+extension on String {
+  bool isValidEmail() {
+    return RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
+  }
+}
+
+//Marzo 21 de 2024
 //Abril 4 de 2024
