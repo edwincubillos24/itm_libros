@@ -26,10 +26,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final _repPassword = TextEditingController();
   final _city = TextEditingController();
 
-  bool _isActionFavorite = false;
-  bool _isFantasyFavorite = false;
-  bool _isLoveFavorite = false;
-  bool _isTerrorFavorite = false;
+  bool _esAccionFavorite = false, _esAventuraFavorite = false, _esCienciaFiccionFavorite = false;
+  bool _esDramaFavorite = false, _esFantasiaFavorite = false, _esRomanceFavorite = false;
+  bool _esSuspensoFavorite = false, _esTerrorFavorite = false;
 
   bool _passwordVisible = true;
   bool _repPasswordVisible = true;
@@ -68,6 +67,13 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void showMessage(String msg) {
+    SnackBar snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +108,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Correo electrónico',
-                      prefixIcon: Icon(Icons.email)),
+                      prefixIcon: Icon(Icons.email),
+                    helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.emailAddress,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value!.isValidEmail() ? null : 'Correo invalido',
                 ),
                 const SizedBox(
                   height: 16.0,
@@ -125,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-                  ),
+                      helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(
@@ -220,25 +229,27 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Expanded(
                       child: CheckboxListTile(
-                          title: const Text("Acción"),
-                          value: _isActionFavorite,
-                          selected: _isActionFavorite,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isActionFavorite = value!;
-                            });
-                          }),
+                        title: const Text('Acción'),
+                        value: _esAccionFavorite,
+                        selected: _esAccionFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esAccionFavorite = value!;
+                          });
+                        },
+                      ),
                     ),
                     Expanded(
                       child: CheckboxListTile(
-                          title: const Text("Fantasía"),
-                          value: _isFantasyFavorite,
-                          selected: _isFantasyFavorite,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isFantasyFavorite = value!;
-                            });
-                          }),
+                        title: const Text('Aventura'),
+                        value: _esAventuraFavorite,
+                        selected: _esAventuraFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esAventuraFavorite = value!;
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -246,25 +257,83 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Expanded(
                       child: CheckboxListTile(
-                          title: const Text("Amor"),
-                          value: _isLoveFavorite,
-                          selected: _isLoveFavorite,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isLoveFavorite = value!;
-                            });
-                          }),
+                        title: const Text('Ciencia ficción'),
+                        value: _esCienciaFiccionFavorite,
+                        selected: _esCienciaFiccionFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esCienciaFiccionFavorite = value!;
+                          });
+                        },
+                      ),
                     ),
                     Expanded(
                       child: CheckboxListTile(
-                          title: const Text("Terror"),
-                          value: _isTerrorFavorite,
-                          selected: _isTerrorFavorite,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isTerrorFavorite = value!;
-                            });
-                          }),
+                        title: const Text('Drama'),
+                        value: _esDramaFavorite,
+                        selected: _esDramaFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esDramaFavorite = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: const Text('Fantasía'),
+                        value: _esFantasiaFavorite,
+                        selected: _esFantasiaFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esFantasiaFavorite = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: const Text('Romance'),
+                        value: _esRomanceFavorite,
+                        selected: _esRomanceFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esRomanceFavorite = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: const Text('Suspenso'),
+                        value: _esSuspensoFavorite,
+                        selected: _esSuspensoFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esSuspensoFavorite = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: const Text('Terror'),
+                        value: _esTerrorFavorite,
+                        selected: _esTerrorFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _esTerrorFavorite = value!;
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
