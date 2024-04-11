@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewBookPage extends StatefulWidget {
   const NewBookPage({super.key});
@@ -9,26 +13,57 @@ class NewBookPage extends StatefulWidget {
 }
 
 class _NewBookPageState extends State<NewBookPage> {
-
   final _name = TextEditingController();
   final _author = TextEditingController();
   final _pages = TextEditingController();
 
   double _rating = 3.0;
 
-  bool _esAccionFavorite = false, _esAventuraFavorite = false, _esCienciaFiccionFavorite = false;
-  bool _esDramaFavorite = false, _esFantasiaFavorite = false, _esRomanceFavorite = false;
+  bool _esAccionFavorite = false,
+      _esAventuraFavorite = false,
+      _esCienciaFiccionFavorite = false;
+  bool _esDramaFavorite = false,
+      _esFantasiaFavorite = false,
+      _esRomanceFavorite = false;
   bool _esSuspensoFavorite = false, _esTerrorFavorite = false;
 
-  void _saveBook(){
+  void _saveBook() {}
 
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future pickImageC() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nuevo Libro'),
+        title: const Text('Nuevo Libro'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -36,6 +71,35 @@ class _NewBookPageState extends State<NewBookPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                decoration: const BoxDecoration(color: Colors.white),
+                height: 170,
+                child: Stack(
+                  children: [
+                    image != null
+                        ? Image.file(image!, width: 150, height: 150)
+                        : const Image(
+                            image: AssetImage('assets/images/logo.png'),
+                            width: 150,
+                            height: 150,
+                          ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        alignment: Alignment.bottomLeft,
+                        onPressed: () async {
+                          pickImage();
+                        },
+                        icon: const Icon(Icons.camera_alt),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
               TextFormField(
                 controller: _name,
                 decoration: const InputDecoration(
