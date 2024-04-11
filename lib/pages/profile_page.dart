@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -37,6 +41,36 @@ class _ProfilePageState extends State<ProfilePage> {
     showAlertDialog(context);
   }
 
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future pickImageC() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +80,31 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             //   mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(
-                image: AssetImage('assets/images/logo.png'),
-                width: 150,
-                height: 150,
+              Container(
+                decoration: const BoxDecoration(color: Colors.white),
+                height: 170,
+                child: Stack(
+                  children: [
+                    image != null
+                        ? Image.file(image!, width: 150, height: 150)
+                        : const Image(
+                      image: AssetImage('assets/images/logo.png'),
+                      width: 150,
+                      height: 150,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        alignment: Alignment.bottomLeft,
+                        onPressed: () async {
+                          pickImage();
+                        },
+                        icon: const Icon(Icons.camera_alt),
+                      ),
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 64.0,
