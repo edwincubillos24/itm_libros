@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "905446777687",
+    "project_id": "itm-libros",
+    "storage_bucket": "itm-libros.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905446777687:android:877ff2f016980e23b69412",
+        "android_client_info": {
+          "package_name": "com.cubidevs.itm_libros"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjltlDPAGh7EwObTGiMkcOx3jWi7zOH8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
