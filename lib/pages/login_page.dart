@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:itm_libros/pages/home_page_navigation_bar_page.dart';
 import 'package:itm_libros/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,22 +27,30 @@ class _LoginPageState extends State<LoginPage> {
 
   User userLoaded = User.Empty();
 
-  void showMessage(String msg){
+  void _showMsg(String msg){
     SnackBar snackBar = SnackBar(
       content: Text(msg),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void _onLoginButtonClicked() {
-    _firebaseApi.loginUser(_email.text, _password.text);
-    /*if (_email.text == userLoaded.email &&
-        _password.text == userLoaded.password) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
-    }
-    else {
-      showMessage("Correo electrónico o contraseña incorrectas");
+  Future<void> _onLoginButtonClicked() async {
+    if (_email.text.isEmpty || _password.text.isEmpty) {
+      _showMsg("Debe digitar correo electrónico y contraseña");
+    } else if (!_email.text.isValidEmail()) {
+      _showMsg("El correo electrónico es inválido");
+    } else {
+      final result = await _firebaseApi.loginUser(_email.text, _password.text);
+      print("Resultado $result");
+      if (result == "network-request-failed") {
+        _showMsg("Revise su conexión a internet");
+      } else if (result == "invalid-credential") {
+        _showMsg("Correo electrónico o contraseña incorrectas");
+      } else {
+        _showMsg("Bienvenido");
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePageNavigationBarPage()));
+      }
     }
   }
 
@@ -82,6 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: 'Correo electrónico',
                       prefixIcon: Icon(Icons.email)),
                   keyboardType: TextInputType.emailAddress,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) =>
+                  value!.isValidEmail() ? null : 'Correo invalido',
                 ),
                 const SizedBox(
                   height: 16.0,
@@ -139,5 +151,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+}
+
+extension on String {
+  bool isValidEmail() {
+    return RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
   }
 }

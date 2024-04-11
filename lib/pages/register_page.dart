@@ -18,7 +18,6 @@ class RegisterPage extends StatefulWidget {
 enum Genre { male, female }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   final FirebaseApi _firebaseApi = FirebaseApi();
 
   final _name = TextEditingController();
@@ -27,8 +26,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _repPassword = TextEditingController();
   final _city = TextEditingController();
 
-  bool _esAccionFavorite = false, _esAventuraFavorite = false, _esCienciaFiccionFavorite = false;
-  bool _esDramaFavorite = false, _esFantasiaFavorite = false, _esRomanceFavorite = false;
+  bool _esAccionFavorite = false,
+      _esAventuraFavorite = false,
+      _esCienciaFiccionFavorite = false;
+  bool _esDramaFavorite = false,
+      _esFantasiaFavorite = false,
+      _esRomanceFavorite = false;
   bool _esSuspensoFavorite = false, _esTerrorFavorite = false;
 
   bool _passwordVisible = true;
@@ -110,10 +113,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       border: OutlineInputBorder(),
                       labelText: 'Correo electrónico',
                       prefixIcon: Icon(Icons.email),
-                    helperText: '*Campo obligatorio'),
+                      helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => value!.isValidEmail() ? null : 'Correo invalido',
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) =>
+                      value!.isValidEmail() ? null : 'Correo invalido',
                 ),
                 const SizedBox(
                   height: 16.0,
@@ -122,19 +126,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _password,
                   obscureText: _passwordVisible,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: 'Contraseña',
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(_passwordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    ),
+                      border: const OutlineInputBorder(),
+                      labelText: 'Contraseña',
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
                       helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.text,
                 ),
@@ -145,18 +149,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _repPassword,
                   obscureText: _repPasswordVisible,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: 'Repita la contraseña',
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                        icon: Icon(_repPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _repPasswordVisible = !_repPasswordVisible;
-                          });
-                        }),
+                      border: const OutlineInputBorder(),
+                      labelText: 'Repita la contraseña',
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                          icon: Icon(_repPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _repPasswordVisible = !_repPasswordVisible;
+                            });
+                          }),
                       helperText: '*Campo obligatorio'),
                   keyboardType: TextInputType.text,
                 ),
@@ -353,8 +357,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-
-
   void _onRegisterButtonClicked() {
     setState(() {
       if (_password.text.isEmpty ||
@@ -362,12 +364,12 @@ class _RegisterPageState extends State<RegisterPage> {
           _email.text.isEmpty) {
         showMessage("ERROR: Debe digitar correo electrónico y las contraseñas");
       } else {
- //       if (!Utils.isEmail(_email.text)) {
-        if (!_email.text.isValidEmail()){
+        if (!_email.text.isValidEmail()) {
           showMessage("ERROR: El correo electrónico no es válido");
         } else {
           if (!Utils.isSizePasswordValid(_password.text)) {
-            showMessage("ERROR: La contraseña debe tener mas de 6 o más digitos");
+            showMessage(
+                "ERROR: La contraseña debe tener mas de 6 o más digitos");
           } else {
             if (_password.text == _repPassword.text) {
               var user = User(_name.text, _email.text, _password.text);
@@ -383,7 +385,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> registerUser() async {
-    var result = await _firebaseApi.registerUser(_email.text,_password.text);
+    var result = await _firebaseApi.registerUser(_email.text, _password.text);
   }
 
   void _saveUser(User user) async {
@@ -395,7 +397,7 @@ class _RegisterPageState extends State<RegisterPage> {
 extension on String {
   bool isValidEmail() {
     return RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(this);
   }
 }
