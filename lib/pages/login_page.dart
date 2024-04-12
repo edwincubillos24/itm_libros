@@ -54,15 +54,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _getUser() async {
+/*  void _getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> userMap = jsonDecode(prefs.getString("user")!);
     userLoaded = User.fromJson(userMap);
   }
-
+*/
   @override
   void initState() {
-    _getUser();
+//    _getUser();
     super.initState();
   }
 

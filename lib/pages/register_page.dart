@@ -372,9 +372,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 "ERROR: La contraseña debe tener mas de 6 o más digitos");
           } else {
             if (_password.text == _repPassword.text) {
-              var user = User(_name.text, _email.text, _password.text);
-              _saveUser(user);
-              Navigator.pop(context);
+           //   var user = User(_name.text, _email.text, _password.text);
+           //   _saveUser(user);
+              registerUser();
+           //   Navigator.pop(context);
             } else {
               showMessage("ERROR: Las contraseñas no son iguales");
             }
@@ -386,6 +387,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> registerUser() async {
     var result = await _firebaseApi.registerUser(_email.text, _password.text);
+
+    //valido que result si es un uid osea que fue exitoso
+    var user = User (result, _name.text, _email.text);
+    createUser(user);
+  }
+
+  Future<void> createUser(User user) async{
+    var result = await _firebaseApi.createUser(user);
+    Navigator.pop(context);
   }
 
   void _saveUser(User user) async {

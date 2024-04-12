@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../models/Book.dart';
+import '../repository/firebase_api.dart';
+
 class NewBookPage extends StatefulWidget {
   const NewBookPage({super.key});
 
@@ -13,6 +16,9 @@ class NewBookPage extends StatefulWidget {
 }
 
 class _NewBookPageState extends State<NewBookPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   final _name = TextEditingController();
   final _author = TextEditingController();
   final _pages = TextEditingController();
@@ -27,7 +33,10 @@ class _NewBookPageState extends State<NewBookPage> {
       _esRomanceFavorite = false;
   bool _esSuspensoFavorite = false, _esTerrorFavorite = false;
 
-  void _saveBook() {}
+  Future<void> _saveBook() async{
+    var book = Book ("", _name.text, _author.text);
+    var result = await _firebaseApi.createBook(book);
+  }
 
   File? image;
 
