@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       title: const Text("Advertencia"),
@@ -76,85 +77,116 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: Center(
-          child: Column(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: const BoxDecoration(color: Colors.white),
-                height: 170,
-                child: Stack(
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>?>>(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Text("Loading");
+              }
+              var user = snapshot.data!.data();
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    image != null
-                        ? Image.file(image!, width: 150, height: 150)
-                        : const Image(
-                      image: AssetImage('assets/images/logo.png'),
-                      width: 150,
-                      height: 150,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: IconButton(
-                        alignment: Alignment.bottomLeft,
-                        onPressed: () async {
-                          pickImage();
-                        },
-                        icon: const Icon(Icons.camera_alt),
+                    Container(
+                      decoration: const BoxDecoration(color: Colors.white),
+                      height: 170,
+                      child: Stack(
+                        children: [
+                          image != null
+                              ? Image.file(image!, width: 150, height: 150)
+                              : const Image(
+                                  image: AssetImage('assets/images/logo.png'),
+                                  width: 150,
+                                  height: 150,
+                                ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: IconButton(
+                              alignment: Alignment.bottomLeft,
+                              onPressed: () async {
+                                pickImage();
+                              },
+                              icon: const Icon(Icons.camera_alt),
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      height: 64.0,
+                    ),
+                    Text('Hola ${user?['name']}',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    Text('Correo:  ${user?['email']}',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    Text("Género: ${user?['genre']}",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    Text("Generos Favoritos\n\n${cargarGenerosFavoritos(user)}",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    Text("Fecha de nacimiento: ${user?['birthDate']} ",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 32.0,
+                    ),
+                    Text("Ciudad de nacimiento: ${user?['birthCity']} ",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 64.0,
+                    ),
+                    ElevatedButton(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(fontSize: 14),
+                      ),
+                      onPressed: _onCerrarSesionButtonClicked,
+                      child: const Text("Cerrar sesión"),
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 64.0,
-              ),
-              const Text("Hola",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 32.0,
-              ),
-              const Text("Correo",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 32.0,
-              ),
-              const Text("Género",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 32.0,
-              ),
-              const Text("Generos Favoritos",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 32.0,
-              ),
-              const Text("Fecha de nacimiento",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 64.0,
-              ),
-              ElevatedButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 14),
-                ),
-                onPressed: _onCerrarSesionButtonClicked,
-                child: const Text("Cerrar sesión"),
-              ),
-            ],
-          ),
-        ),
+              );
+            }),
       ),
     );
+  }
+
+  String cargarGenerosFavoritos(Map<String, dynamic>? user) {
+    String _generosFavoritos = "";
+    if (user?['isActionFavorite'] == true) _generosFavoritos = "Acción";
+    if (user?['_isAdventureFavorite'] == true) _generosFavoritos += " Aventura";
+    if (user?['_isDramaFavorite'] == true) _generosFavoritos += " Drama";
+    if (user?['_isFantasyFavorite'] == true) _generosFavoritos += "Fantasia";
+    if (user?['_isFictionFavorite'] == true) _generosFavoritos += "Ficción";
+    if (user?['_isRomanceFavorite'] == true) _generosFavoritos += "Romance";
+    if (user?['_isSuspenseFavorite'] == true) _generosFavoritos += "Suspenso";
+    if (user?['_isTerrorFavorite'] == true) _generosFavoritos += "Terror";
+    return _generosFavoritos;
   }
 }
