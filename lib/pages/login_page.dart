@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _passwordVisible = true;
 
-  User userLoaded = User.Empty();
+  //User userLoaded = User.Empty();
 
   void _showMsg(String msg){
     SnackBar snackBar = SnackBar(
@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
       } else if (result == "invalid-credential") {
         _showMsg("Correo electrónico o contraseña incorrectas");
       } else {
-        _showMsg("Bienvenido");
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const HomePageNavigationBarPage()));
       }

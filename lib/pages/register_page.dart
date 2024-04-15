@@ -26,18 +26,19 @@ class _RegisterPageState extends State<RegisterPage> {
   final _repPassword = TextEditingController();
   final _city = TextEditingController();
 
-  bool _esAccionFavorite = false,
-      _esAventuraFavorite = false,
-      _esCienciaFiccionFavorite = false;
-  bool _esDramaFavorite = false,
-      _esFantasiaFavorite = false,
-      _esRomanceFavorite = false;
-  bool _esSuspensoFavorite = false, _esTerrorFavorite = false;
+  bool _isActionFavorite = false,
+      _isAdventureFavorite = false,
+      _isDramaFavorite = false;
+  bool _isFantasyFavorite = false,
+      _isFictionFavorite = false,
+      _isRomanceFavorite = false;
+  bool _isSuspenseFavorite = false, _isTerrorFavorite = false;
 
   bool _passwordVisible = true;
   bool _repPasswordVisible = true;
 
-  String _birthDate = "Fecha de Nacimiento";
+  String _birthDate = "";
+  String _birthDateLabel = "Fecha de Nacimiento";
 
   Genre? _genre = Genre.male;
   String _genreSelected = 'Masculino';
@@ -63,10 +64,10 @@ class _RegisterPageState extends State<RegisterPage> {
         initialDate: DateTime.now(),
         firstDate: DateTime(1924, 01, 01),
         lastDate: DateTime.now(),
-        helpText: _birthDate);
+        helpText: _birthDateLabel);
     if (newDate != null) {
       setState(() {
-        _birthDate = "Fecha de nacimiento ${_dateConverter(newDate)}";
+        _birthDate = _dateConverter(newDate);
       });
     }
   }
@@ -218,7 +219,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
                 ElevatedButton(
-                  child: Text(_birthDate),
+                  child: Text("$_birthDateLabel: $_birthDate"),
                   onPressed: () {
                     _showSelectDate();
                   },
@@ -235,11 +236,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(
                       child: CheckboxListTile(
                         title: const Text('Acción'),
-                        value: _esAccionFavorite,
-                        selected: _esAccionFavorite,
+                        value: _isActionFavorite,
+                        selected: _isActionFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esAccionFavorite = value!;
+                            _isActionFavorite = value!;
                           });
                         },
                       ),
@@ -247,11 +248,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(
                       child: CheckboxListTile(
                         title: const Text('Aventura'),
-                        value: _esAventuraFavorite,
-                        selected: _esAventuraFavorite,
+                        value: _isAdventureFavorite,
+                        selected: _isAdventureFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esAventuraFavorite = value!;
+                            _isAdventureFavorite = value!;
                           });
                         },
                       ),
@@ -260,26 +261,26 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 Row(
                   children: [
-                    Expanded(
-                      child: CheckboxListTile(
-                        title: const Text('Ciencia ficción'),
-                        value: _esCienciaFiccionFavorite,
-                        selected: _esCienciaFiccionFavorite,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _esCienciaFiccionFavorite = value!;
-                          });
-                        },
-                      ),
-                    ),
                     Expanded(
                       child: CheckboxListTile(
                         title: const Text('Drama'),
-                        value: _esDramaFavorite,
-                        selected: _esDramaFavorite,
+                        value: _isDramaFavorite,
+                        selected: _isDramaFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esDramaFavorite = value!;
+                            _isDramaFavorite = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: const Text('Fantasia'),
+                        value: _isFantasyFavorite,
+                        selected: _isFantasyFavorite,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isFantasyFavorite = value!;
                           });
                         },
                       ),
@@ -290,12 +291,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Expanded(
                       child: CheckboxListTile(
-                        title: const Text('Fantasía'),
-                        value: _esFantasiaFavorite,
-                        selected: _esFantasiaFavorite,
+                        title: const Text('Ficción'),
+                        value: _isFictionFavorite,
+                        selected: _isFictionFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esFantasiaFavorite = value!;
+                            _isFictionFavorite = value!;
                           });
                         },
                       ),
@@ -303,11 +304,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(
                       child: CheckboxListTile(
                         title: const Text('Romance'),
-                        value: _esRomanceFavorite,
-                        selected: _esRomanceFavorite,
+                        value: _isRomanceFavorite,
+                        selected: _isRomanceFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esRomanceFavorite = value!;
+                            _isRomanceFavorite = value!;
                           });
                         },
                       ),
@@ -319,11 +320,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(
                       child: CheckboxListTile(
                         title: const Text('Suspenso'),
-                        value: _esSuspensoFavorite,
-                        selected: _esSuspensoFavorite,
+                        value: _isSuspenseFavorite,
+                        selected: _isSuspenseFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esSuspensoFavorite = value!;
+                            _isSuspenseFavorite = value!;
                           });
                         },
                       ),
@@ -331,11 +332,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(
                       child: CheckboxListTile(
                         title: const Text('Terror'),
-                        value: _esTerrorFavorite,
-                        selected: _esTerrorFavorite,
+                        value: _isTerrorFavorite,
+                        selected: _isTerrorFavorite,
                         onChanged: (bool? value) {
                           setState(() {
-                            _esTerrorFavorite = value!;
+                            _isTerrorFavorite = value!;
                           });
                         },
                       ),
@@ -372,10 +373,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 "ERROR: La contraseña debe tener mas de 6 o más digitos");
           } else {
             if (_password.text == _repPassword.text) {
-           //   var user = User(_name.text, _email.text, _password.text);
-           //   _saveUser(user);
+              //   var user = User(_name.text, _email.text, _password.text);
+              //   _saveUser(user);
               registerUser();
-           //   Navigator.pop(context);
+              //   Navigator.pop(context);
             } else {
               showMessage("ERROR: Las contraseñas no son iguales");
             }
@@ -387,15 +388,46 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> registerUser() async {
     var result = await _firebaseApi.registerUser(_email.text, _password.text);
-
-    //valido que result si es un uid osea que fue exitoso
-    var user = User (result, _name.text, _email.text);
-    createUser(user);
+    print("Resultado $result");
+    if (result == 'weak-password') {
+      showMessage('La contraseña debe tener 6 o más caracteres');
+    } else if (result == 'email-already-in-use') {
+      showMessage('Ya existe una cuenta con ese correo electrónico.');
+    } else if (result == "invalid-email") {
+      showMessage("El correo electrónico es inválido");
+    } else if (result == "network-request-failed") {
+      showMessage("Revise su conexión a internet");
+    } else {
+      //registro exitoso
+      createUser(result);
+    }
   }
 
-  Future<void> createUser(User user) async{
+  Future<void> createUser(Object? uid) async {
+    String genre = _genre == Genre.male ? "Masculino" : "Femenino";
+    var user = User(
+        _city.text,
+        _birthDate,
+        _email.text,
+        _name.text,
+        genre,
+        _isActionFavorite,
+        _isAdventureFavorite,
+        _isDramaFavorite,
+        _isFantasyFavorite,
+        _isFictionFavorite,
+        _isRomanceFavorite,
+        _isSuspenseFavorite,
+        _isTerrorFavorite,
+        uid,
+        "");
     var result = await _firebaseApi.createUser(user);
-    Navigator.pop(context);
+    if (result == "network-request-failed") {
+      showMessage("Revise su conexión a internet");
+    } else {
+      //Creacion exitosa
+      Navigator.pop(context);
+    }
   }
 
   void _saveUser(User user) async {

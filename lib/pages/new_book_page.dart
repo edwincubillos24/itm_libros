@@ -25,17 +25,38 @@ class _NewBookPageState extends State<NewBookPage> {
 
   double _rating = 3.0;
 
-  bool _esAccionFavorite = false,
-      _esAventuraFavorite = false,
-      _esCienciaFiccionFavorite = false;
-  bool _esDramaFavorite = false,
-      _esFantasiaFavorite = false,
-      _esRomanceFavorite = false;
-  bool _esSuspensoFavorite = false, _esTerrorFavorite = false;
+  bool _isActionFavorite = false,
+      _isAdventureFavorite = false,
+      _isDramaFavorite = false;
+  bool _isFantasyFavorite = false,
+      _isFictionFavorite = false,
+      _isRomanceFavorite = false;
+  bool _isSuspenseFavorite = false, _isTerrorFavorite = false;
 
   Future<void> _saveBook() async{
-    var book = Book ("", _name.text, _author.text);
+    var book = Book ("", _name.text, _author.text, _pages.text, _rating, _isActionFavorite,
+      _isAdventureFavorite,
+      _isDramaFavorite,
+      _isFantasyFavorite,
+      _isFictionFavorite,
+      _isRomanceFavorite,
+      _isSuspenseFavorite,
+      _isTerrorFavorite,
+      "");
     var result = await _firebaseApi.createBook(book);
+    if (result == "network-request-failed") {
+      showMessage("Revise su conexión a internet");
+    } else {
+      //Creacion exitosa
+      Navigator.pop(context);
+    }
+  }
+
+  void showMessage(String msg) {
+    SnackBar snackBar = SnackBar(
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   File? image;
@@ -166,11 +187,11 @@ class _NewBookPageState extends State<NewBookPage> {
                   Expanded(
                     child: CheckboxListTile(
                       title: const Text('Acción'),
-                      value: _esAccionFavorite,
-                      selected: _esAccionFavorite,
+                      value: _isActionFavorite,
+                      selected: _isActionFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esAccionFavorite = value!;
+                          _isActionFavorite = value!;
                         });
                       },
                     ),
@@ -178,11 +199,11 @@ class _NewBookPageState extends State<NewBookPage> {
                   Expanded(
                     child: CheckboxListTile(
                       title: const Text('Aventura'),
-                      value: _esAventuraFavorite,
-                      selected: _esAventuraFavorite,
+                      value: _isAdventureFavorite,
+                      selected: _isAdventureFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esAventuraFavorite = value!;
+                          _isAdventureFavorite = value!;
                         });
                       },
                     ),
@@ -191,26 +212,26 @@ class _NewBookPageState extends State<NewBookPage> {
               ),
               Row(
                 children: [
-                  Expanded(
-                    child: CheckboxListTile(
-                      title: const Text('Ciencia ficción'),
-                      value: _esCienciaFiccionFavorite,
-                      selected: _esCienciaFiccionFavorite,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _esCienciaFiccionFavorite = value!;
-                        });
-                      },
-                    ),
-                  ),
                   Expanded(
                     child: CheckboxListTile(
                       title: const Text('Drama'),
-                      value: _esDramaFavorite,
-                      selected: _esDramaFavorite,
+                      value: _isDramaFavorite,
+                      selected: _isDramaFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esDramaFavorite = value!;
+                          _isDramaFavorite = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: CheckboxListTile(
+                      title: const Text('Fantasia'),
+                      value: _isFantasyFavorite,
+                      selected: _isFantasyFavorite,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isFantasyFavorite = value!;
                         });
                       },
                     ),
@@ -221,12 +242,12 @@ class _NewBookPageState extends State<NewBookPage> {
                 children: [
                   Expanded(
                     child: CheckboxListTile(
-                      title: const Text('Fantasía'),
-                      value: _esFantasiaFavorite,
-                      selected: _esFantasiaFavorite,
+                      title: const Text('Ficción'),
+                      value: _isFictionFavorite,
+                      selected: _isFictionFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esFantasiaFavorite = value!;
+                          _isFictionFavorite = value!;
                         });
                       },
                     ),
@@ -234,11 +255,11 @@ class _NewBookPageState extends State<NewBookPage> {
                   Expanded(
                     child: CheckboxListTile(
                       title: const Text('Romance'),
-                      value: _esRomanceFavorite,
-                      selected: _esRomanceFavorite,
+                      value: _isRomanceFavorite,
+                      selected: _isRomanceFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esRomanceFavorite = value!;
+                          _isRomanceFavorite = value!;
                         });
                       },
                     ),
@@ -250,11 +271,11 @@ class _NewBookPageState extends State<NewBookPage> {
                   Expanded(
                     child: CheckboxListTile(
                       title: const Text('Suspenso'),
-                      value: _esSuspensoFavorite,
-                      selected: _esSuspensoFavorite,
+                      value: _isSuspenseFavorite,
+                      selected: _isSuspenseFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esSuspensoFavorite = value!;
+                          _isSuspenseFavorite = value!;
                         });
                       },
                     ),
@@ -262,11 +283,11 @@ class _NewBookPageState extends State<NewBookPage> {
                   Expanded(
                     child: CheckboxListTile(
                       title: const Text('Terror'),
-                      value: _esTerrorFavorite,
-                      selected: _esTerrorFavorite,
+                      value: _isTerrorFavorite,
+                      selected: _isTerrorFavorite,
                       onChanged: (bool? value) {
                         setState(() {
-                          _esTerrorFavorite = value!;
+                          _isTerrorFavorite = value!;
                         });
                       },
                     ),
