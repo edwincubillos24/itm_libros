@@ -1,9 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:itm_libros/pages/home_page_navigation_bar_page.dart';
-import 'package:itm_libros/pages/home_page_tabs_page.dart';
-import 'package:itm_libros/pages/register_page.dart';
 
-import 'home_page_navigation_drawer_page.dart';
+import 'home_page_navigation_bar_page.dart';
 import 'login_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -14,15 +12,23 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   Future<void> _closeSplash() async {
     Future.delayed(const Duration(seconds: 2), () async {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        )
-      );
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user == null) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ));
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomePageNavigationBarPage(),
+              ));
+        }
+      });
     });
   }
 

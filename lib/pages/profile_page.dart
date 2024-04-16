@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'login_page.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -17,16 +19,22 @@ class _ProfilePageState extends State<ProfilePage> {
   showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       title: const Text("Advertencia"),
-      content: const Text("¿Esta seguro que desea cerrar sesión?"),
+      content: const Text("¿Está seguro que desea cerrar sesión?"),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, 'Cancel'),
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
-        ),
+            child: const Text('OK'),
+            onPressed: () => {
+                  FirebaseAuth.instance.signOut(),
+                  Navigator.pop(context, 'OK'),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage())),
+                }),
       ],
     );
     // show the dialog
