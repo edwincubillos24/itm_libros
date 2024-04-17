@@ -58,4 +58,15 @@ class FirebaseApi {
       return e.code;
     }
   }
+
+  Future<String> deleteBook(QueryDocumentSnapshot book) async{
+    try{
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      await FirebaseFirestore.instance.collection("users").doc(uid).collection("books").doc(book.id).delete();
+      return uid!;
+    } on FirebaseException catch (e) {
+      print("FirebaseAuthException ${e.code}");
+      return e.code;
+    }
+  }
 }
