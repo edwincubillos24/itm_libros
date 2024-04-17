@@ -14,6 +14,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   Future<void> _closeSplash() async {
     Future.delayed(const Duration(seconds: 2), () async {
+    //  throw Exception(); //Prueba Crashlytics
+
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         if (user == null) {
           Navigator.pushReplacement(
