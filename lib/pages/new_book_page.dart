@@ -43,7 +43,9 @@ class _NewBookPageState extends State<NewBookPage> {
       _isSuspenseFavorite,
       _isTerrorFavorite,
       "");
-    var result = await _firebaseApi.createBook(book);
+
+
+    var result = await _firebaseApi.createBook(book,image);
     if (result == "network-request-failed") {
       showMessage("Revise su conexión a internet");
     } else {
