@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/User.dart';
+import '../models/user.dart';
 import '../repository/firebase_api.dart';
 import '../utils.dart';
 

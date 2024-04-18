@@ -5,7 +5,7 @@ import 'package:itm_libros/pages/home_page_navigation_bar_page.dart';
 import 'package:itm_libros/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/User.dart';
+import '../models/user.dart';
 import '../repository/firebase_api.dart';
 import 'home_page.dart';
 

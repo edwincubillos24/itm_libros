@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../models/Book.dart';
+import '../models/book.dart';
 import '../repository/firebase_api.dart';
 
 class NewBookPage extends StatefulWidget {

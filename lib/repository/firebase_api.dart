@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../models/Book.dart';
-import '../models/User.dart' as UserApp;
+import '../models/book.dart';
+import '../models/user.dart' as UserApp;
 
 class FirebaseApi {
   Future<Object?> registerUser(String email, String password) async {
