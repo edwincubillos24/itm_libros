@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:itm_libros/repository/firebase_api.dart';
 
@@ -15,6 +16,22 @@ class MyBooksPage extends StatefulWidget {
 class _MyBooksPageState extends State<MyBooksPage> {
 
   final FirebaseApi _firebaseApi = FirebaseApi();
+
+  void setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    fcm.requestPermission();
+    final token = await fcm.getToken();
+    print("fcm $token");
+    fcm.subscribeToTopic('chat');
+  }
+
+  @override
+  void initState() {
+    setupPushNotifications();
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   void _addButtonClicked() {
     setState(() {
