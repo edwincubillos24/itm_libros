@@ -420,7 +420,8 @@ class _RegisterPageState extends State<RegisterPage> {
         _isSuspenseFavorite,
         _isTerrorFavorite,
         uid,
-        "");
+        "",
+        "user");
     var result = await _firebaseApi.createUser(user);
     if (result == "network-request-failed") {
       showMessage("Revise su conexión a internet");

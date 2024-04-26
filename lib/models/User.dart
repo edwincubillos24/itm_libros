@@ -14,6 +14,7 @@ class User {
   var _isTerrorFavorite;
   var _uid;
   var _urlPicture;
+  var _rol;
 
   Map<String, dynamic> toJson() => {
         'uid': _uid,
@@ -31,6 +32,7 @@ class User {
         'isSuspenseFavorite': _isSuspenseFavorite,
         'isTerrorFavorite': _isTerrorFavorite,
         'urlPicture': _urlPicture,
+        'rol': _rol,
       };
 
   User.fromJson(Map<String, dynamic> json)
@@ -48,7 +50,8 @@ class User {
         _isRomanceFavorite = json['isRomanceFavorite'],
         _isSuspenseFavorite = json['isSuspenseFavorite'],
         _isTerrorFavorite = json['isTerrorFavorite'],
-        _urlPicture = json['urlPicture'];
+        _urlPicture = json['urlPicture'],
+        _rol = json['rol'];
 
   User(
       this._birthCity,
@@ -65,7 +68,8 @@ class User {
       this._isSuspenseFavorite,
       this._isTerrorFavorite,
       this._uid,
-      this._urlPicture);
+      this._urlPicture,
+      this._rol);
 
   get birthCity => _birthCity;
 

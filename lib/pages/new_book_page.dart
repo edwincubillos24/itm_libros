@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/Book.dart';
 import '../repository/firebase_api.dart';
@@ -90,6 +91,8 @@ class _NewBookPageState extends State<NewBookPage> {
       print('Failed to pick image: $e');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

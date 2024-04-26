@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:itm_libros/pages/home_page_navigation_drawer_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../repository/firebase_api.dart';
 import 'home_page_navigation_bar_page.dart';
 import 'login_page.dart';
 
@@ -12,11 +15,14 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   Future<void> _closeSplash() async {
     Future.delayed(const Duration(seconds: 2), () async {
     //  throw Exception(); //Prueba Crashlytics
 
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) async {
         if (user == null) {
           Navigator.pushReplacement(
               context,
@@ -24,14 +30,31 @@ class _SplashPageState extends State<SplashPage> {
                 builder: (context) => const LoginPage(),
               ));
         } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomePageNavigationBarPage(),
-              ));
+
+          //cargar los roles
+          var tipoUsuario = await _firebaseApi.loadUser();
+          _saveRol(tipoUsuario);
+          if (tipoUsuario == "admin") {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePageNavigationBarPage(),
+                ));
+          } else {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePageNavigationDrawerPage(),
+                ));
+          }
         }
       });
     });
+  }
+
+  void _saveRol(String rol) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("rol", rol);
   }
 
   @override

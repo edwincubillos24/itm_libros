@@ -50,6 +50,22 @@ class FirebaseApi {
     }
   }
 
+  Future<String> loadUser() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final currentUser = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .get();
+      final user = currentUser.data() as Map<String, dynamic>;
+      print("tipo de usuario ${user['rol']}");
+      return user['rol'];
+    } on FirebaseException catch (e) {
+      print("FirebaseAuthException ${e.code}");
+      return e.code;
+    }
+  }
+
   Future<String> createBook(Book book, File? image) async {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
