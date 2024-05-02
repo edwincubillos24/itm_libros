@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:async';
 
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:custom_info_window/custom_info_window.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+//import 'package:flutter_map/flutter_map.dart';
+//import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailStorePage extends StatefulWidget {
@@ -19,7 +22,7 @@ class _DetailStorePageState extends State<DetailStorePage> {
 
   _DetailStorePageState(this.store);
 
-  /* final Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
   final Set<Marker> _markers = Set<Marker>();
 
   final CustomInfoWindowController _customInfoWindowController =
@@ -132,9 +135,9 @@ class _DetailStorePageState extends State<DetailStorePage> {
         ),
       );
     });
-  }*/
+  }
 
-  @override
+/*  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(store['name'])),
@@ -156,6 +159,18 @@ class _DetailStorePageState extends State<DetailStorePage> {
                 height: 80,
                 child: Image.asset('assets/images/bookstore.png'),
               ),
+              Marker(
+                point: LatLng(6.2973585, -75.5605463),
+                width: 80,
+                height: 80,
+                child: Image.asset('assets/images/bookstore.png'),
+              ),
+              Marker(
+                point: LatLng(6.3973585, -75.5605463),
+                width: 80,
+                height: 80,
+                child: Image.asset('assets/images/bookstore.png'),
+              ),
             ],
           ),
           RichAttributionWidget(
@@ -170,5 +185,5 @@ class _DetailStorePageState extends State<DetailStorePage> {
         ],
       ),
     );
-  }
+  }*/
 }
