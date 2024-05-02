@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../boxes.dart';
+import '../models/local_book.dart';
 import '../models/response_api.dart';
 
 class DetailApiBookPage extends StatefulWidget {
@@ -16,11 +18,19 @@ class _DetailApiBookPageState extends State<DetailApiBookPage> {
 
   _DetailApiBookPageState(this.book);
 
+  var isFavorite = false;
+
+  @override
+  void initState() {
+    _getFavoritesBooks();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(book.title ?? "Detalle"),
+        title: Text(book.title ?? "Title"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -36,6 +46,21 @@ class _DetailApiBookPageState extends State<DetailApiBookPage> {
                     image: AssetImage('assets/images/logo.png'),
                   );
                 },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: IconButton(
+                      alignment: Alignment.topRight,
+                      icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border),
+                      color: Colors.red,
+                      onPressed: (() {
+                        _onFavoriteButtonClicked();
+                      }),
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -69,4 +94,37 @@ class _DetailApiBookPageState extends State<DetailApiBookPage> {
       ),
     );
   }
+
+  void _getFavoritesBooks() {
+    final box = Boxes.getFavoritesBox();
+    box.values.forEach((element) {
+      if (element.title == book.title) {
+        print("${element.title} esta en favoritos");
+        isFavorite = true;
+      }
+    });
+  }
+
+  void _onFavoriteButtonClicked() async {
+    var localBook = LocalBook()
+      ..title = book.title
+      ..author = book.author
+      ..bookImage = book.bookImage
+      ..publisher = book.publisher
+      ..description = book.description;
+
+    final box = Boxes.getFavoritesBox();
+    // box.add(localBook);
+    if (isFavorite) {
+      print("eliminado");
+      box.delete(localBook.title);
+    } else {
+      print("agregado");
+      box.put(localBook.title, localBook);
+    }
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
+
 }

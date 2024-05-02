@@ -60,7 +60,7 @@ class _BooksApiPageState extends State<BooksApiPage> {
                       },
                     ),
                     title: Text(book.title ?? "No title"),
-                    subtitle: Text(book.author ?? "No publishedDate"),
+                    subtitle: Text(book.author ?? "No author"),
                     onTap: () {
                       Navigator.push(
                           context,

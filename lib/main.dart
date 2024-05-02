@@ -3,19 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:itm_libros/pages/splash_page.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'firebase_options.dart';
+import 'models/local_book.dart';
 
 void main() async {
+
+  await Hive.initFlutter();
+
+  Hive. registerAdapter(LocalBookAdapter());
+
+  await Hive.openBox<LocalBook>('favorites_book');
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Pass all uncaught "fatal" errors from the framework to Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
 
   runApp(const MyApp());
 }

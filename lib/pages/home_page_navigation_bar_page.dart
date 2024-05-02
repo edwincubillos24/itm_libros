@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:itm_libros/pages/profile_page.dart';
 import 'books_api_page.dart';
 import 'books_store_page.dart';
+import 'favorites_books.dart';
 import 'my_books_page.dart';
 
 class HomePageNavigationBarPage extends StatefulWidget {
@@ -18,6 +19,7 @@ class _HomePageNavigationBarPageState extends State<HomePageNavigationBarPage> {
   static const List<Widget> _widgetOptions = <Widget>[
     MyBooksPage(),
     BooksApiPage(),
+    FavoritesBooksPage(),
     BooksStorePage(),
     ProfilePage()
   ];
@@ -38,21 +40,25 @@ class _HomePageNavigationBarPageState extends State<HomePageNavigationBarPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.black,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Image.asset('assets/images/mislibros.png'),
             label: 'Mis libros',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/images/bookapi.png'),
+            icon: Image.asset('assets/images/bookapi.png', color: Colors.black,),
             label: 'Api Libros',
           ),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border_rounded),
+              label: 'Favoritos'),
           BottomNavigationBarItem(
             icon: Image.asset('assets/images/bookstore.png'),
             label: 'Tienda',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.black),
+            icon: Icon(Icons.person_2_outlined, color: Colors.black),
             label: 'Mi Perfil',
           ),
         ],
